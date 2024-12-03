@@ -1,0 +1,45 @@
+* {box-sizing: border-box;}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #003e1f;
+}
+
+.header {
+    color: #d5f2e3;
+    text-shadow: 3xp 3px 3px #000;
+}
+
+.text {
+    color: #d5f2e3;
+}
+
+.btn {
+    color: #d5f2e3;
+    background-color: #d90429;
+}
+
+.subheading {
+    color: #d5f2e3;
+}
+
+.form-text {
+    color: #d5f2e3;
+}
+
+.form-label {
+    color: #d5f2e3;
+}
+
+.site {
+    color: #d5f2e3;
+}
+
+.input-form {
+    border: 2px solid #ef233c;
+    
+}
+
+
+
