@@ -16,6 +16,9 @@ const completedBtn = document.getElementById('completedBtn')
 const completedList = document.getElementById('completedList')
 const completedTasks = document.getElementById('completedTasks')
 
+
+let prevItem
+let currentItem
 // array of tasks
 let taskArray = []
 
@@ -39,14 +42,29 @@ addTaskBtn.addEventListener('click', (e)=> {
 
 // take input
 const validateInput =()=> {
+    
 
-    // if (taskInput.value === '') {
-    //     alert('Please enter a task before submitting')
-    // } else {
-    //     makeTask(taskInput.value)
-    // }
+    if (taskInput.value === '') {
+        alert('Please enter a task before submitting')
+    } else {
 
-    taskInput.value === ''  ? alert('Please enter a task before submitting') : makeTask(taskInput.value)
+        for (let i = 0; i < taskArray.length; i++) {
+            if (taskInput.value === taskArray[i].task) {
+                alert('Task has already been added')
+                taskInput.value = ''
+                return
+            }
+        }
+        makeTask(taskInput.value)
+        
+    }
+
+    // testing...
+
+
+    //end testing...
+
+    // taskInput.value === ''  ? alert('Please enter a task before submitting') : makeTask(taskInput.value)
 
     taskInput.value = ''
 }
@@ -84,6 +102,7 @@ const makeTaskItem =(el, item)=> {
     const checkbox = document.createElement('input')
     checkbox.setAttribute('type', 'checkbox')
     checkbox.setAttribute('id', `taskId-${item.id}`)
+    checkbox.setAttribute('data-id', `${item.id}`)
     checkbox.classList.add('form-check-input', 'checkbox')
 
     const label = document.createElement('label')
@@ -114,35 +133,33 @@ completedBtn.addEventListener('click', (e)=> {
 })
 
 // validate checked tasks
-const validateCompletedTasks =()=> {
+const validateCompletedTasks = ()=> {
     let completedArray = []
     const checkboxes = document.querySelectorAll('.checkbox')
-    const allTasks = document.querySelectorAll('.task-label')
 
     // testing...
-// console.log(taskArray)
-for (let i = 0; i < taskArray.length; i++) {
-    // console.log(taskArray[i].isCompleted)
-    let isComplete = taskArray[i].isCompleted // t or f
-    
-    for (let i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked && (allTasks[i].getAttribute('for') == checkboxes[i].getAttribute('id'))) {
-            isComplete = !isComplete
-            let dateCompleted = new Date()
 
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked &&(checkboxes[i].getAttribute('data-id') == taskArray[i].id)) {
             taskArray[i] = {
                 ...taskArray[i],
-                isCompleted: isComplete,
-                dateCompleted: dateCompleted.toString()
+                isCompleted: true,
+                dateCompleted: new Date().toString()
             }
-            allTasks[i].classList.add('text-succes')
-            completedArray = [...completedArray, allTasks[i].innerText]
         }
     }
-}
-console.log(taskArray)
+// console.log(taskArray)
+
+    for (let i = 0; i < taskArray.length; i++) {
+        if (taskArray[i].isCompleted) {
+            completedArray = [...completedArray, taskArray [i]]
+        }
+    }
 
     //end testing...
+
+    completedTasks.innerText = completedArray.length
+    makeCompletedItem(completedArray)
 
 
 
@@ -165,12 +182,23 @@ console.log(taskArray)
 // make li for completedList
 const makeCompletedItem =(arr)=> {
     arr.forEach(item => {
-        const task = item
+        const task = item.task
+        const dateCompleted = item.dateCompleted
 
         const completedItem = document.createElement('li')
         completedItem.classList.add('list-group-item', 'text-success', 'text-capitalize', 'completed-item')
-        completedItem.innerText = task
+        completedItem.innerText = `${task} | completed: $ {dataCompleted}`
 
-        completedList.appendChild(completedItem)
+
+        // testing...
+
+        currentItem = task
+        // completedList.appendChild(completedItem)
+
+        if (currentItem !== prevItem) {
+            completedList.appendChild(completedItem)
+            prevItem = currentItem
+            return
+        }
     })
 }
